@@ -1,0 +1,49 @@
+name: CodeQL Security Scan
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "test-codeql" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  security-events: write
+  contents: read
+
+jobs:
+  analyze:
+    name: Analyze CodeQL
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Pobranie kodu
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # 2. Inicjalizacja środowiska CodeQL
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: 'csharp' # Wskazujemy język Twojej aplikacji
+        # Opcjonalnie: queries: security-extended,security-and-quality
+
+    # 3. Konfiguracja SDK (niezbędne do kompilacji projektu .NET 10)
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    # 4. RĘCZNA KOMPILACJA (Zamiast auto-buildu, gwarantuje stabilność dla .NET 10)
+    - name: Build Project
+      run: |
+        dotnet restore
+        dotnet build --no-incremental
+
+    # 5. Wykonanie analizy CodeQL i wygenerowanie raportu SARIF
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:csharp"
