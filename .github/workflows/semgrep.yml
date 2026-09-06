@@ -37,7 +37,7 @@ jobs:
       - name: Run Semgrep Scan
         run: |
           semgrep scan \
-            --config "p/default" \
+            --config auto \
             --sarif \
             --output semgrep-results.sarif \
             --metrics=off
