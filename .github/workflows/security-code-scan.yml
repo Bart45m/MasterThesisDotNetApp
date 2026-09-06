@@ -11,13 +11,17 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+permissions:
+  security-events: write
+  contents: read
+
 jobs:
   SCS:
     runs-on: ubuntu-latest
 
     env:
       DOTNET_ROLL_FORWARD: Major 
-      
+
     steps:     
       - uses: actions/checkout@v4
       
@@ -33,4 +37,4 @@ jobs:
         uses: security-code-scan/security-code-scan-results-action@v1
         
       - name: Upload sarif	
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
