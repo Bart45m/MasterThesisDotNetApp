@@ -28,7 +28,7 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: 'csharp' # Wskazujemy język Twojej aplikacji
-        # Opcjonalnie: queries: security-extended,security-and-quality
+        queries: security-extended,security-and-quality
 
     # 3. Konfiguracja SDK (niezbędne do kompilacji projektu .NET 10)
     - name: Setup .NET SDK
