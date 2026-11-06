@@ -24,6 +24,14 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<OrderItem>().ToTable("order_items");
         modelBuilder.Entity<Review>().ToTable("reviews");
 
+        modelBuilder.Entity<User>()
+        .Property(u => u.Role)
+        .HasConversion<string>(); // Automatycznie zamienia enum na string i odwrotnie
+
+        modelBuilder.Entity<Order>()
+            .Property(o => o.Status)
+            .HasConversion<string>();
+
         // Relacje i klucze obce
         modelBuilder.Entity<Order>()
             .HasOne(o => o.User)
